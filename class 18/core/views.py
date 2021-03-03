@@ -6,4 +6,4 @@ def index(request):
     return render(request, 'index.html')
 
 def contato(request):
-    return (request, 'contato.html')
+    return render(request, 'contato.html')
