@@ -1,0 +1,12 @@
+# django install #
+
+terminal
+pip install django
+------------------
+
+# used libraries #
+
+terminal
+pip freeze > requirements.txt
+-----------------------------
+
