@@ -1,12 +1,67 @@
-# django install #
+,----------------.
+| django install |
+'----------------'
+ terminal
+ pip install django
+--------------------
 
-terminal
-pip install django
-------------------
+,----------------.
+| used libraries |
+'----------------'
+ terminal
+ pip freeze > requirements.txt
+-------------------------------
 
-# used libraries #
+,-----------------------.
+| create django project |
+'-----------------------'
+ terminal
+ pwd
+ it is necessary to be in the project directory
+ django-admin startproject django1 .
+ command with . is used to not create a root directory, only the project directory
+-----------------------------------------------------------------------------------
 
-terminal
-pip freeze > requirements.txt
------------------------------
+ ,-----------.
+ | manage.py |
+ '-----------'
+  file used to execute Django commands
+ --------------------------------------
 
+ ,-------------.
+ | __init__.py |
+ '-------------'
+  turns a directory into a python package
+ -----------------------------------------
+
+ ,-------------.
+ | settings.py |
+ '-------------'
+  project settings
+  DEBUG
+  when in production, after False
+  ALLOWED_HOSTS
+  domain
+  MIDDLEWARE
+  browser -> <- middleware -> <- system
+  TEMPLATES
+  frontend templates
+  AUTH_PASSWORD_VALIDATORS
+  password validator
+  LANGUAGE_CODE
+  application language
+  TIME_ZONE
+  standard time
+ ---------------------------------------
+
+ ,---------.
+ | urls.py |
+ '---------'
+  routes file
+ -------------
+
+ ,---------.
+ | wsgi.py |
+ '---------'
+  exclusive file for publication
+ --------------------------------
