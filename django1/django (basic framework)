@@ -18,7 +18,7 @@
  terminal
  pwd
  it is necessary to be in the project directory
- django-admin startproject django1 .
+ django-admin startproject projectName .
  command with . is used to not create a root directory, only the project directory
 -----------------------------------------------------------------------------------
 
@@ -65,3 +65,45 @@
  '---------'
   exclusive file for publication
  --------------------------------
+
+,---------------------------.
+| create django application |
+'---------------------------'
+ terminal
+ ls
+ it is necessary to be in the project directory
+ django-admin startapp appName
+------------------------------------------------
+
+ ,----------.
+ | admin.py |
+ '----------'
+  Where templates are added and the application is configured
+ -------------------------------------------------------------
+
+ ,-----------.
+ | models.py |
+ '-----------'
+  where the classes will be, what we will persist in the database
+ -----------------------------------------------------------------
+
+ ,----------.
+ | views.py |
+ '----------'
+  where are the functions, which are called in the routes to open the templates for viewing
+ -------------------------------------------------------------------------------------------
+
+,---.
+| # |
+'---'
+ for each app, you need to add it in settings.py
+ INSTALLED_APPS = ['appName',]
+-------------------------------------------------
+
+,---.
+| # |
+'---'
+ another configuration is to create the templates directory within the application and place it in settings.py
+ TEMPLATES = [{'DIRS': ['directoryTemplates'],}]
+---------------------------------------------------------------------------------------------------------------
+
