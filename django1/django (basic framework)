@@ -107,3 +107,23 @@
  TEMPLATES = [{'DIRS': ['directoryTemplates'],}]
 ---------------------------------------------------------------------------------------------------------------
 
+,---.
+| # |
+'---'
+ a django project is a set of applications django
+--------------------------------------------------
+
+,------------------.
+| starting project |
+'------------------'
+ terminal
+ python manage.py runserver
+----------------------------
+
+,---.
+| # |
+'---'
+ put on '*' in ALLOWED_HOSTS only to developer
+ ALLOWED_HOSTS = ['*']
+-----------------------------------------------
+
