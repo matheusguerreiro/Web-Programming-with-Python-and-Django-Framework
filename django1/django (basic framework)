@@ -3,14 +3,14 @@
 '----------------'
  terminal
  pip install django
---------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 ,----------------.
 | used libraries |
 '----------------'
  terminal
  pip freeze > requirements.txt
--------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 ,-----------------------.
 | create django project |
@@ -20,19 +20,19 @@
  it is necessary to be in the project directory
  django-admin startproject projectName .
  command with . is used to not create a root directory, only the project directory
------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
  ,-----------.
  | manage.py |
  '-----------'
   file used to execute Django commands
- --------------------------------------
+ ----------------------------------------------------------------------------------------------------------------------
 
  ,-------------.
  | __init__.py |
  '-------------'
   turns a directory into a python package
- -----------------------------------------
+ ----------------------------------------------------------------------------------------------------------------------
 
  ,-------------.
  | settings.py |
@@ -52,19 +52,19 @@
   application language
   TIME_ZONE
   standard time
- ---------------------------------------
+ ----------------------------------------------------------------------------------------------------------------------
 
  ,---------.
  | urls.py |
  '---------'
   routes file
- -------------
+ ----------------------------------------------------------------------------------------------------------------------
 
  ,---------.
  | wsgi.py |
  '---------'
   exclusive file for publication
- --------------------------------
+ ----------------------------------------------------------------------------------------------------------------------
 
 ,---------------------------.
 | create django application |
@@ -73,57 +73,102 @@
  ls
  it is necessary to be in the project directory
  django-admin startapp appName
-------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
  ,----------.
  | admin.py |
  '----------'
   Where templates are added and the application is configured
- -------------------------------------------------------------
+ ----------------------------------------------------------------------------------------------------------------------
 
  ,-----------.
  | models.py |
  '-----------'
   where the classes will be, what we will persist in the database
- -----------------------------------------------------------------
+ ----------------------------------------------------------------------------------------------------------------------
 
  ,----------.
  | views.py |
  '----------'
   where are the functions, which are called in the routes to open the templates for viewing
- -------------------------------------------------------------------------------------------
+ ----------------------------------------------------------------------------------------------------------------------
 
 ,---.
 | # |
 '---'
  for each app, you need to add it in settings.py
  INSTALLED_APPS = ['appName',]
--------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 ,---.
 | # |
 '---'
  another configuration is to create the templates directory within the application and place it in settings.py
  TEMPLATES = [{'DIRS': ['directoryTemplates'],}]
----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 ,---.
 | # |
 '---'
  a django project is a set of applications django
---------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 ,------------------.
 | starting project |
 '------------------'
  terminal
  python manage.py runserver
-----------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 ,---.
 | # |
 '---'
  put on '*' in ALLOWED_HOSTS only to developer
  ALLOWED_HOSTS = ['*']
------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+,----------.
+| views.py |
+'----------'
+ always create visualizations within applications
+ a django view is a python function
+
+ views examples:
+ def index(request):
+    return render(request, 'index.html')
+
+ def contato(request):
+    return render(request, 'contato.html')
+-----------------------------------------------------------------------------------------------------------------------
+
+,---------.
+| urls.py |
+'---------'
+ it is ideal to create urls within the application
+ for that we created the urls.py file inside the application
+ and configure the project's urls.py to forward requests to the application's urls.py
+ with
+ from django.urls import path, include
+ and
+ path('', include('core.urls')),
+ within urlpatterns
+
+ project's urls.py example:
+ from django.contrib import admin
+ from django.urls import path, include
+
+ urlpatterns = [
+     path('admin/', admin.site.urls),
+     path('', include('core.urls')),
+ ]
+
+ application's urls.py example:
+ from django.urls import path
+ from .views import index, contato
+
+ urlpatterns = [
+     path('', index),
+     path('contato', contato),
+ ]
+-----------------------------------------------------------------------------------------------------------------------
 
