@@ -172,3 +172,76 @@
  ]
 -----------------------------------------------------------------------------------------------------------------------
 
+,-----------.
+| templates |
+'-----------'
+ directory created within the application to place your templates
+ configure the directory within settings.py with
+ TEMPLATES = [{'DIRS': ['templates'],}]
+
+ create the templates within the templates directory
+ file.html
+
+ index.html
+ contato.html
+
+ to pass some information to the model a variable is created in the view.py and passed in the return
+ after that we call the key in the template.html
+
+ view example:
+ def index(request):
+    context = {
+        'curso': 'Programação Web com Django Framework'
+    }
+    return render(request, 'index.html', context)
+
+ template example:
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+     <meta charset="UTF-8">
+     <title>Index</title>
+ </head>
+ <body>
+     <h1>index.html</h1>
+     <h2>Django1</h2>
+     <h3>{{curso}}</h3>
+ </body>
+ </html>
+-----------------------------------------------------------------------------------------------------------------------
+
+,-----------.
+| models.py |
+'-----------'
+ data model, where we will persist data in the database, here are the applications classes
+
+ models.py example:
+ from django.db import models
+
+ # Create your models here.
+
+ class Produto(models.Model):
+     nome = models.CharField('Nome', max_length=43)
+     preco = models.DecimalField('Preço', decimal_places=2, max_digits=7)
+     estoque = models.IntegerField('Estoque')
+
+ ,---.
+ | # |
+ '---'
+  read all the project applications and create the models with
+  terminal
+  python manage.py makemigrations
+  for make the migrations and
+  python manage.py migrate
+  for execute the migrations
+
+ let's create another class, another data model
+ within models.py
+ class Cliente(models.Model):
+     nome = models.CharField('Nome', max_length=21)
+     sobrenome = models.CharField('Sobrenome', max_length=32)
+     email = models.EmailField('E-mail', max_length=43)
+ after
+ python manage.py makemigrations
+ python manage.py migrate
+-----------------------------------------------------------------------------------------------------------------------
