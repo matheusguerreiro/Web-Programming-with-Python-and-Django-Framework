@@ -133,12 +133,15 @@
  always create visualizations within applications
  a django view is a python function
 
+###################################################
  views examples:
- def index(request):
-    return render(request, 'index.html')
+###################################################
+ def index(request):                            <-
+    return render(request, 'index.html')        <-
 
- def contato(request):
-    return render(request, 'contato.html')
+ def contato(request):                          <-
+    return render(request, 'contato.html')      <-
+###################################################
 -----------------------------------------------------------------------------------------------------------------------
 
 ,---------.
@@ -153,23 +156,29 @@
  path('', include('core.urls')),
  within urlpatterns
 
+###################################################
  project's urls.py example:
+###################################################
  from django.contrib import admin
- from django.urls import path, include
+ from django.urls import path, include          <-
 
- urlpatterns = [
-     path('admin/', admin.site.urls),
-     path('', include('core.urls')),
- ]
+ urlpatterns = [                                <-
+     path('admin/', admin.site.urls),           <-
+     path('', include('core.urls')),            <-
+ ]                                              <-
+###################################################
 
+###########################################
  application's urls.py example:
- from django.urls import path
- from .views import index, contato
+###########################################
+ from django.urls import path           <-
+ from .views import index, contato      <-
 
- urlpatterns = [
-     path('', index),
-     path('contato', contato),
- ]
+ urlpatterns = [                        <-
+     path('', index),                   <-
+     path('contato', contato),          <-
+ ]                                      <-
+###########################################
 -----------------------------------------------------------------------------------------------------------------------
 
 ,-----------.
@@ -188,26 +197,32 @@
  to pass some information to the model a variable is created in the view.py and passed in the return
  after that we call the key in the template.html
 
+###############################################################
  view example:
+###############################################################
  def index(request):
-    context = {
-        'curso': 'Programação Web com Django Framework'
-    }
-    return render(request, 'index.html', context)
+    context = {                                             <-
+        'curso': 'Programação Web com Django Framework'     <-
+    }                                                       <-
+    return render(request, 'index.html', context)           <-
+###############################################################
 
+###################################
  template example:
- <!DOCTYPE html>
- <html lang="pt-br">
- <head>
-     <meta charset="UTF-8">
-     <title>Index</title>
- </head>
- <body>
-     <h1>index.html</h1>
-     <h2>Django1</h2>
-     <h3>{{curso}}</h3>
- </body>
- </html>
+###################################
+ <!DOCTYPE html>                <-
+ <html lang="pt-br">            <-
+ <head>                         <-
+     <meta charset="UTF-8">     <-
+     <title>Index</title>       <-
+ </head>                        <-
+ <body>                         <-
+     <h1>index.html</h1>        <-
+     <h2>Django1</h2>           <-
+     <h3>{{curso}}</h3>         <-
+ </body>                        <-
+ </html>                        <-
+###################################
 -----------------------------------------------------------------------------------------------------------------------
 
 ,-----------.
@@ -215,15 +230,18 @@
 '-----------'
  data model, where we will persist data in the database, here are the applications classes
 
+###################################################################################
  models.py example:
+###################################################################################
  from django.db import models
 
  # Create your models here.
 
- class Produto(models.Model):
-     nome = models.CharField('Nome', max_length=43)
-     preco = models.DecimalField('Preço', decimal_places=2, max_digits=7)
-     estoque = models.IntegerField('Estoque')
+ class Produto(models.Model):                                                   <-
+     nome = models.CharField('Nome', max_length=43)                             <-
+     preco = models.DecimalField('Preço', decimal_places=2, max_digits=7)       <-
+     estoque = models.IntegerField('Estoque')                                   <-
+###################################################################################
 
  ,---.
  | # |
@@ -245,3 +263,235 @@
  python manage.py makemigrations
  python manage.py migrate
 -----------------------------------------------------------------------------------------------------------------------
+
+,----------.
+| admin.py |
+'----------'
+
+ terminal
+ python manage.py createsuperuser
+ superuser name
+ password
+ password
+ http://127.0.0.1:8000/admin
+
+ in the admin.py of the application we will register our models in the administrative area with
+ from .models import model
+ admin.site.register(model)
+
+###############################################
+ admin.py example:
+###############################################
+ from django.contrib import admin
+
+ # Register your models here.
+
+ from .models import Produto, Cliente       <-
+
+ admin.site.register(Produto)               <-
+ admin.site.register(Cliente)               <-
+###############################################
+
+ on the site to appear the name instead of object 1, object 2...
+ place the __str__(self) function in the model
+
+##########################################################################
+ models.py example
+##########################################################################
+ from django.db import models
+
+ # Create your models here.
+
+ class Produto(models.Model):
+     nome = models.CharField('Nome', max_length=43)
+     preco = models.DecimalField('Preço', decimal_places=2, max_digits=7)
+     estoque = models.IntegerField('Estoque')
+
+     def __str__(self):         <-
+         return self.nome       <-
+
+
+ class Cliente(models.Model):
+     nome = models.CharField('Nome', max_length=21)
+     sobrenome = models.CharField('Sobrenome', max_length=32)
+     email = models.EmailField('E-mail', max_length=43)
+
+     def __str__(self):         <-
+         return self.nome       <-
+##########################################################################
+
+ already to configure the data to be shown in admin.py on the site
+
+###########################################################
+ admin.py example:
+###########################################################
+ from django.contrib import admin
+
+ # Register your models here.
+
+ from .models import Produto, Cliente
+
+ class ProdutoAdmin(admin.ModelAdmin):                  <-
+     list_display = ('nome', 'preco', 'estoque')        <-
+
+ class ClienteAdmin(admin.ModelAdmin):                  <-
+     list_display = ('nome', 'sobrenome', 'email')      <-
+
+ admin.site.register(Produto, ProdutoAdmin)             <-
+ admin.site.register(Cliente, ClienteAdmin)             <-
+###########################################################
+-----------------------------------------------------------------------------------------------------------------------
+
+,------------------------------------------------.
+| present data from the database in the template |
+'------------------------------------------------'
+
+#########################################################
+ views.py example
+#########################################################
+ from django.shortcuts import render
+
+ # Create your views here.
+
+ from .models import Produto                <-
+
+ def index(request):
+     produtos = Produto.objects.all()       <-
+     context = {
+         'curso': 'Programação Web com Django Framework',
+         'produtos': produtos               <-
+     }
+     return render(request, 'index.html', context)
+
+ def contato(request):
+     return render(request, 'contato.html')
+##########################################################
+
+##################################################################
+ index.html example
+##################################################################
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+     <meta charset="UTF-8">
+     <title>Index</title>
+ </head>
+ <body>
+     <h1>index.html</h1>
+     <h2>Django1</h2>
+     <h3>{{curso}}</h3>
+     {%for produto in produtos%}        <-      {% python code %}
+         <p>{{produto}}</p>             <-      <p>{{ ... }}</p>
+     {%endfor%}                         <-
+ </body>
+ </html>
+##################################################################
+
+ table with database data
+
+###################################################################
+ urls.py example
+###################################################################
+ from django.urls import path
+ from .views import index, contato, produto                     <-
+
+ urlpatterns = [
+     path('', index, name='index'),                             <-
+     path('contato', contato, name='contato'),                  <-
+     path('produto/<int:pk>', produto, name='produto'),         <-
+ ]                                                              <-
+###################################################################
+
+###############################################################
+ views.py example
+###############################################################
+ from django.shortcuts import render
+
+ # Create your views here.
+
+ from .models import Produto
+
+ def index(request):
+     produtos = Produto.objects.all()
+     context = {
+         'curso': 'Programação Web com Django Framework',
+         'produtos': produtos
+     }
+     return render(request, 'index.html', context)
+
+ def contato(request):
+     return render(request, 'contato.html')
+
+ def produto(request, pk):                                  <-
+     prod = Produto.objects.get(id=pk)                      <-
+     context = {                                            <-
+         'produto': prod                                    <-
+     }                                                      <-
+     return render(request, 'produto.html', context)        <-
+###############################################################
+
+#######################################################################################################
+ index.html example
+#######################################################################################################
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+     <meta charset="UTF-8">
+     <title>Index</title>
+ </head>
+ <body>
+     <h1>index.html</h1>
+     <h2>Django1</h2>
+     <h3>{{curso}}</h3>
+     <table style="width:50%">                                                                      <-
+         <thead>                                                                                    <-
+             <tr>                                                                                   <-
+                 <th>Produto</th>                                                                   <-
+                 <th>Preço</th>                                                                     <-
+                 <th>Estoque</th>                                                                   <-
+             </tr>                                                                                  <-
+         </thead>                                                                                   <-
+         <tbody>                                                                                    <-
+             {%for produto in produtos%}                                                            <-
+                 <tr>                                                                               <-
+                     <td><a href="{%url 'produto' produto.pk%}">{{produto.nome}}</a></td>           <-
+                     <td>{{produto.preco}}</td>                                                     <-
+                     <td>{{produto.estoque}}</td>                                                   <-
+                 </tr>                                                                              <-
+             {%endfor%}                                                                             <-
+         </tbody>                                                                                   <-
+     </table>                                                                                       <-
+ </body>                                                                                            <-
+ </html>                                                                                            <-
+#######################################################################################################
+
+###########################################################################################
+ produto.html example
+###########################################################################################
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+     <meta charset="UTF-8">
+     <title>Produto</title>
+ </head>
+ <body>
+     <h1>produto.html</h1>
+     <table style="width:50%">                                                          <-
+         <thead>                                                                        <-
+             <tr>                                                                       <-
+                 <th>Produto</th>                                                       <-
+                 <th>Preço</th>                                                         <-
+                 <th>Estoque</th>                                                       <-
+             </tr>                                                                      <-
+         </thead>                                                                       <-
+         <tbody>                                                                        <-
+                 <tr>                                                                   <-
+                     <td><a href="{%url 'index'%}">{{produto.nome}}</a></td>            <-
+                     <td>{{produto.preco}}</td>                                         <-
+                     <td>{{produto.estoque}}</td>                                       <-
+                 </tr>                                                                  <-
+         </tbody>                                                                       <-
+     </table>                                                                           <-
+ </body>
+ </html>
+###########################################################################################
