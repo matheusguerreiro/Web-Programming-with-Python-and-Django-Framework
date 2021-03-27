@@ -1,8 +1,8 @@
 ,----------------.
-| django install |
+| Django install |
 '----------------'
  terminal
- pip install django
+ pip install Django
 -----------------------------------------------------------------------------------------------------------------------
 
 ,----------------.
@@ -13,12 +13,12 @@
 -----------------------------------------------------------------------------------------------------------------------
 
 ,-----------------------.
-| create django project |
+| create Django project |
 '-----------------------'
  terminal
  pwd
  it is necessary to be in the project directory
- django-admin startproject projectName .
+ Django-admin startproject projectName .
  command with . is used to not create a root directory, only the project directory
 -----------------------------------------------------------------------------------------------------------------------
 
@@ -67,12 +67,12 @@
  ----------------------------------------------------------------------------------------------------------------------
 
 ,---------------------------.
-| create django application |
+| create Django application |
 '---------------------------'
  terminal
  ls
  it is necessary to be in the project directory
- django-admin startapp appName
+ Django-admin startapp appName
 -----------------------------------------------------------------------------------------------------------------------
 
  ,----------.
@@ -110,7 +110,7 @@
 ,---.
 | # |
 '---'
- a django project is a set of applications django
+ a Django project is a set of applications Django
 -----------------------------------------------------------------------------------------------------------------------
 
 ,------------------.
@@ -131,7 +131,7 @@
 | views.py |
 '----------'
  always create visualizations within applications
- a django view is a python function
+ a Django view is a python function
 
 ###################################################
  views examples:
@@ -151,7 +151,7 @@
  for that we created the urls.py file inside the application
  and configure the project's urls.py to forward requests to the application's urls.py
  with
- from django.urls import path, include
+ from Django.urls import path, include
  and
  path('', include('core.urls')),
  within urlpatterns
@@ -159,8 +159,8 @@
 ###################################################
  project's urls.py example:
 ###################################################
- from django.contrib import admin
- from django.urls import path, include          <-
+ from Django.contrib import admin
+ from Django.urls import path, include          <-
 
  urlpatterns = [                                <-
      path('admin/', admin.site.urls),           <-
@@ -171,7 +171,7 @@
 ###########################################
  application's urls.py example:
 ###########################################
- from django.urls import path           <-
+ from Django.urls import path           <-
  from .views import index, contato      <-
 
  urlpatterns = [                        <-
@@ -233,7 +233,7 @@
 ###################################################################################
  models.py example:
 ###################################################################################
- from django.db import models
+ from Django.db import models
 
  # Create your models here.
 
@@ -282,7 +282,7 @@
 ###############################################
  admin.py example:
 ###############################################
- from django.contrib import admin
+ from Django.contrib import admin
 
  # Register your models here.
 
@@ -298,7 +298,7 @@
 ##########################################################################
  models.py example
 ##########################################################################
- from django.db import models
+ from Django.db import models
 
  # Create your models here.
 
@@ -325,7 +325,7 @@
 ###########################################################
  admin.py example:
 ###########################################################
- from django.contrib import admin
+ from Django.contrib import admin
 
  # Register your models here.
 
@@ -349,7 +349,7 @@
 #########################################################
  views.py example
 #########################################################
- from django.shortcuts import render
+ from Django.shortcuts import render
 
  # Create your views here.
 
@@ -392,7 +392,7 @@
 ###################################################################
  urls.py example
 ###################################################################
- from django.urls import path
+ from Django.urls import path
  from .views import index, contato, produto                     <-
 
  urlpatterns = [
@@ -405,7 +405,7 @@
 ###############################################################
  views.py example
 ###############################################################
- from django.shortcuts import render
+ from Django.shortcuts import render
 
  # Create your views here.
 
@@ -495,3 +495,167 @@
  </body>
  </html>
 ###########################################################################################
+-----------------------------------------------------------------------------------------------------------------------
+
+,--------------------------------------------------------.
+| static files in the Django: css, javascript and images |
+'--------------------------------------------------------'
+
+ create the static directory within the application and, within static, create the css, js and images directories
+ create in settings.py the following line after of STATIC_URL = '/static/'
+ STATIC_ROOT = Path(BASE_DIR, 'staticfiles')
+ create styles.css file inside of the css directory
+
+################################
+ styles.css example
+################################
+ body {
+     background-color: #000000;
+     color: #ffffff;
+ }
+
+ table, th, td {
+     border: 1px solid white;
+ }
+################################
+
+ configure template.html file to load stylesheet file
+
+##########################################################################################
+ index.html
+##########################################################################################
+ {%load static%}                                                        <-
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+     <meta charset="UTF-8">
+     <title>Index</title>
+     <link rel="stylesheet" href="{%static 'css/styles.css'%}">         <-
+ </head>
+ <body>
+     <h1>index.html</h1>
+     <h2>Django1</h2>
+     <h3>{{curso}}</h3>
+     <table style="width:50%">
+         <thead>
+             <tr>
+                 <th>Produto</th>
+                 <th>Preço</th>
+                 <th>Estoque</th>
+             </tr>
+         </thead>
+         <tbody>
+             {%for produto in produtos%}
+                 <tr>
+                     <td><a href="{%url 'produto' produto.pk%}">{{produto.nome}}</a></td>
+                     <td>{{produto.preco}}</td>
+                     <td>{{produto.estoque}}</td>
+                 </tr>
+             {%endfor%}
+         </tbody>
+     </table>
+ </body>
+ </html>
+##########################################################################################
+
+ putting an image in the template.html
+ save the image in the images directory and call it in the code
+
+##########################################################################################
+ index.html example
+##########################################################################################
+ {%load static%}
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+     <meta charset="UTF-8">
+     <title>Index</title>
+     <link rel="stylesheet" href="{%static 'css/styles.css'%}">
+ </head>
+ <body>
+     <h1>index.html</h1>
+     <h2>Django1</h2>
+     <h3>{{curso}}</h3>
+     <img src="{%static 'images/djangologo.png'%}"/>            <-
+     <table style="width:50%">
+         <thead>
+             <tr>
+                 <th>Produto</th>
+                 <th>Preço</th>
+                 <th>Estoque</th>
+             </tr>
+         </thead>
+         <tbody>
+             {%for produto in produtos%}
+                 <tr>
+                     <td><a href="{%url 'produto' produto.pk%}">{{produto.nome}}</a></td>
+                     <td>{{produto.preco}}</td>
+                     <td>{{produto.estoque}}</td>
+                 </tr>
+             {%endfor%}
+         </tbody>
+     </table>
+ </body>
+ </html>
+##########################################################################################
+
+ putting a button in the template.html
+ put the button in the template.html with
+ create the script.js file within js directory and
+ create the button function and load the script into the code
+
+###########################################################################################
+ index.html example
+###########################################################################################
+ {%load static%}
+ <!DOCTYPE html>
+ <html lang="pt-br">
+ <head>
+     <meta charset="UTF-8">
+     <title>Index</title>
+     <link rel="stylesheet" href="{%static 'css/styles.css'%}">
+ </head>
+ <body>
+     <h1>index.html</h1>
+     <h2>Django1</h2>
+     <h3>{{curso}}</h3>
+     <img src="{%static 'images/djangologo.png'%}"/>
+     <table style="width:50%">
+         <thead>
+             <tr>
+                 <th>Produto</th>
+                 <th>Preço</th>
+                 <th>Estoque</th>
+             </tr>
+         </thead>
+         <tbody>
+             {%for produto in produtos%}
+                 <tr>
+                     <td><a href="{%url 'produto' produto.pk%}">{{produto.nome}}</a></td>
+                     <td>{{produto.preco}}</td>
+                     <td>{{produto.estoque}}</td>
+                 </tr>
+             {%endfor%}
+         </tbody>
+     </table>
+     <button onclick="teste();">Clique para Testar</button>                             <-
+     <script type="text/javascript" src="{%static 'js/script.js'%}"></script>           <-
+ </body>
+ </html>
+###########################################################################################
+
+##############################
+ script.js example
+##############################
+function teste(){
+    alert("Funciona Mesmo!");
+}
+##############################
+
+ ,---.
+ | # |
+ '---'
+  prepare o staticfiles directory with all static file
+  terminal
+  python manage.py collectstatic
+
